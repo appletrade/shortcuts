@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple Trade · Shortcuts</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #111111;
+    --bg-card-hover: #161616;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.18);
+    --text-primary: #f0f0f0;
+    --text-secondary: #888;
+    --text-muted: #444;
+    --accent: #e8e8e8;
+    --accent-dim: rgba(232,232,232,0.07);
+    --instagram: #E1306C;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  html { background: var(--bg); color: var(--text-primary); font-family: 'DM Sans', sans-serif; }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%),
+      var(--bg);
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10,10,10,0.85);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-icon img { display: block; width: 40px; height: 40px; object-fit: contain; }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .logo-text span {
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+
+  .header-right { display: flex; align-items: center; gap: 16px; }
+
+  .ig-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 7px 13px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .ig-link:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+    background: var(--accent-dim);
+  }
+
+  .ig-link svg { flex-shrink: 0; }
+
+  /* HERO */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 24px 48px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-dim);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+  }
+
+  .hero h1 strong { font-weight: 500; }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 440px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* GRID */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 20px;
+  }
+
+  .shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.03), transparent 60%);
+    pointer-events: none;
+  }
+
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+  }
+
+  .card-info { flex: 1; min-width: 0; }
+
+  .card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.45;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-open, .btn-copy {
+    flex: 1;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    letter-spacing: 0.01em;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    text-decoration: none;
+  }
+
+  .btn-open {
+    background: var(--text-primary);
+    color: #0a0a0a;
+  }
+
+  .btn-open:hover { background: #d0d0d0; }
+
+  .btn-copy {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  .btn-copy:hover {
+    background: var(--accent-dim);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+  }
+
+  .btn-copy.copied {
+    color: #4ade80;
+    border-color: rgba(74,222,128,0.3);
+  }
+
+  /* EMPTY STATE */
+  .empty-card {
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 300;
+    grid-column: 1 / -1;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
+  footer a { color: var(--text-muted); text-decoration: none; }
+  footer a:hover { color: var(--text-secondary); }
+
+  @media (max-width: 500px) {
+    .hero { padding: 48px 20px 32px; }
+    main { padding: 0 20px 60px; }
+    .shortcuts-grid { grid-template-columns: 1fr; }
+    .logo-text span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <img src="images/logo.png" alt="Apple Trade">
+      </div>
+      <span class="logo-text">Apple Trade<span> · Shortcuts</span></span>
+    </a>
+
+    <div class="header-right">
+      <a href="https://www.instagram.com/appletradearg/" target="_blank" rel="noopener" class="ig-link" aria-label="Instagram de Apple Trade">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+        @appletradearg
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+    <div style="margin-bottom:28px;">
+    <img src="images/logo.png" alt="Apple Trade" style="width:110px;height:110px;object-fit:contain;">
+  </div>
+<div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4"/></svg>
+    iPhone Shortcuts
+  </div>
+  <h1>Sacale el máximo<br>a tu <strong>iPhone</strong></h1>
+  <p>Shortcuts seleccionados por el equipo de Apple Trade para que uses tu iPhone como un pro.</p>
+</section>
+
+<main>
+  <p class="section-label">Disponibles</p>
+
+  <div class="shortcuts-grid" id="grid">
+
+    <!-- CARD EJEMPLO 1 -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">⚡</div>
+        <div class="card-info">
+          <div class="card-name">Modo foco rápido</div>
+          <div class="card-desc">Activá No molestar con un toque, sin entrar a ajustes.</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn-open" href="https://www.icloud.com/shortcuts/" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Abrir
+        </a>
+        <button class="btn-copy" onclick="copyLink(this, 'https://www.icloud.com/shortcuts/')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copiar
+        </button>
+      </div>
+    </div>
+
+    <!-- CARD EJEMPLO 2 -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">🔋</div>
+        <div class="card-info">
+          <div class="card-name">Estado de batería</div>
+          <div class="card-desc">Muestra porcentaje, temperatura y ciclos de carga.</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn-open" href="https://www.icloud.com/shortcuts/" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Abrir
+        </a>
+        <button class="btn-copy" onclick="copyLink(this, 'https://www.icloud.com/shortcuts/')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copiar
+        </button>
+      </div>
+    </div>
+
+    <!-- CARD EJEMPLO 3 -->
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon">📸</div>
+        <div class="card-info">
+          <div class="card-name">Comprimir fotos</div>
+          <div class="card-desc">Reducí el peso de tus imágenes sin perder calidad visible.</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn-open" href="https://www.icloud.com/shortcuts/" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Abrir
+        </a>
+        <button class="btn-copy" onclick="copyLink(this, 'https://www.icloud.com/shortcuts/')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copiar
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <p>Todos los derechos reservados <a href="https://www.instagram.com/appletradearg/" target="_blank">@appletradearg</a></p>
+</footer>
+
+<script>
+function copyLink(btn, url) {
+  navigator.clipboard.writeText(url).then(() => {
+    const svg = btn.querySelector('svg');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copiado`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar`;
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
